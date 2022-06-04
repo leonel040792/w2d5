@@ -25,14 +25,13 @@ class List
     end
 
     def valid_index?(index)
-        return false if index < 0 || index >= self.size
+        return false if 0> index || index >= self.size
         true
     end
 
     def swap(idx1, idx2)
-        if self.valid_index?(idx1) && self.valid_index?(idx2)
-            debugger
-            @items[idx1], @items[idx2]= @items[idx2], @items[idx1]
+        if self.valid_index?(idx1.to_i) && self.valid_index?(idx2.to_i)
+            @items[idx1.to_i], @items[idx2.to_i]= @items[idx2.to_i], @items[idx1.to_i]
             return true 
         else
             return false
@@ -62,8 +61,8 @@ class List
 
     def print_full_item(index)
         puts "===================="
-        puts "#{@items[index].title}                #{@items[index].deadline}"
-        puts "#{@items[index].description}"
+        puts "#{@items[index.to_i].title}                #{@items[index].deadline}"
+        puts "#{@items[index.to_i].description}"
         puts "===================="
     end
 
@@ -73,26 +72,42 @@ class List
 
     def up(index, amount=1)
         return false unless valid_index?(index)
-
+        track=index
         if (index - amount) <0
-            @items[index],@items[0] = @items[0], @items[index]
+            until @items[track]==@items[0]
+                @items[track], @items[track-1]=@items[track-1],@items[track]
+                track-=1
+            end
         else
-            @items[index], @items[index-amount]=@items[index-amount],@items[index]
+            amount.times do |i|
+                @items[track], @items[track+1]=@items[track+1],@items[track]
+                track-=1
+            end        
         end
         true
     end
 
     def down(index, amount=1)
         return false unless valid_index?(index)
+        track = index 
 
         if (index +amount) > (@items.length-1)
-            @items[index],@items[-1] = @items[-1], @items[index]
+            until @items[track]==@items[-1]
+                @items[track], @items[track+1]=@items[track+1],@items[track]
+                track+=1
+            end
         else
-            @items[index], @items[index+amount]=@items[index+amount],@items[index]
+            amount.times do |i|
+                @items[track], @items[track+1]=@items[track+1],@items[track]
+                track+=1
+            end
         end
         true
     end
 
 
+    def sort_by_date!
+        @items.sort_by!{|item| item.deadline}
+    end
 
 end
