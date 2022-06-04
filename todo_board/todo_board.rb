@@ -17,16 +17,16 @@ class TodoBoard
             @list.add_item(*args)
             # return true
         when 'up'
-            @list.up(*args.each(&:to_i))
+            @list.up(*args.map!(&:to_i))
             # return true
         when 'down'
-            @list.down(*args.each(&:to_i))
+            @list.down(*args.map!(&:to_i))
             # return true
         when 'swap'
             @list.swap(args[0],args[1])
             # return true
         when 'sort'
-            @list.sort_by_date!(*args.each(&:to_i))
+            @list.sort_by_date!(*args.map!(&:to_i))
             # return true
         when 'priority'
             @list.print_priority
@@ -35,7 +35,7 @@ class TodoBoard
             if args.length==0
                 @list.print 
             else 
-                @list.print_full_item(*args.each(&:to_i))
+                @list.print_full_item(*args.map!(&:to_i))
             end
             # return true
         when 'quit'

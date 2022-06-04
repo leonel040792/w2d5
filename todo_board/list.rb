@@ -72,37 +72,16 @@ class List
 
     def up(index, amount=1)
         return false unless valid_index?(index)
-        track=index
-        if (index - amount) <0
-            until @items[track]==@items[0]
-                @items[track], @items[track-1]=@items[track-1],@items[track]
-                track-=1
-            end
-        else
-            amount.times do |i|
-                @items[track], @items[track+1]=@items[track+1],@items[track]
-                track-=1
-            end        
-        end
-        true
+        return true if index == 0 || amount == 0
+        @items[index],@items[index-1]=@items[index-1],@items[index]
+        up(index-1,amount-1)
     end
 
     def down(index, amount=1)
         return false unless valid_index?(index)
-        track = index 
-
-        if (index +amount) > (@items.length-1)
-            until @items[track]==@items[-1]
-                @items[track], @items[track+1]=@items[track+1],@items[track]
-                track+=1
-            end
-        else
-            amount.times do |i|
-                @items[track], @items[track+1]=@items[track+1],@items[track]
-                track+=1
-            end
-        end
-        true
+        return true if index==(@items.length-1) ||  amount==0
+        @items[index],@items[index+1]= @items[index+1],@items[index]
+        down(index+1,amount - 1)
     end
 
 
